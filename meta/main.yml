@@ -6,7 +6,16 @@ galaxy_info:
   company: "@crusher"
   license: MIT / BSD
   min_ansible_version: 2.0
+  platforms:
+    - name: Debian
+      versions:
+        - stretch
+        - buster
+        # Kali linux isn't an option here, but it is based on
+        # Debian Testing:
+        # https://www.kali.org/docs/policy/kali-linux-relationship-with-debian
   galaxy_tags:
-    - cobaltstrike, redteam, cobalt_strike, cobalt-strike
+    - cobaltstrike
+    - redteam
 
 dependencies: []
