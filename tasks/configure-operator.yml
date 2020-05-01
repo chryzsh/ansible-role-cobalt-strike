@@ -31,4 +31,3 @@
     dest: "{{ ansible_env.HOME }}/cobaltstrike/kits"
     remote_src: yes
   loop: "{{ kit_urls.results }}"
-

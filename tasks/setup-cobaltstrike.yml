@@ -1,3 +1,4 @@
+---
 # General installation
 - name: Write license key to file
   copy:
