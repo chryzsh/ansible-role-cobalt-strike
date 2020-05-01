@@ -1,0 +1,5 @@
+---
+# defaults file for cobalt_strike
+
+cobalt_strike_role: operator
+license_key: aaaa-bbbb-cccc-dddd

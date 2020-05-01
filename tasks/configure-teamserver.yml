@@ -1,0 +1,20 @@
+---
+# Configure as Teamserver
+- name: Create profile directory in CS directory
+  file:
+    path: "{{ ansible_env.HOME }}/cobaltstrike/profiles"
+    state: directory
+
+- name: Download specified C2 profile
+  get_url:
+    url: "{{ c2_profile_url }}"
+    dest: "{{ ansible_env.HOME }}/cobaltstrike/profiles"
+    mode: get
+
+- name: Start Teamserver inside tmux session
+  shell: |
+    tmux has-session -t teamserver_session 2>/dev/null;
+    if [$? !=0]; then tmux new-session -d -s teamserver_session 'cd {{ ansible_env.HOME }}/cobaltstrike && sudo ./teamserver {{ ansible_default_ipv4.address }} {{ teamserver_password }} {{ ansible_env.HOME }}/cobaltstrike/profiles/{{ c2_profile_url | basename }}'
+    fi
+  args:
+    chdir: "{{ ansible_env.HOME }}/cobaltstrike"

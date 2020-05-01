@@ -1,0 +1,4 @@
+---
+# vars file for Teamserver
+c2_profile_url: https://github.com/xx0hcd/Malleable-C2-Profiles/raw/master/template.profile
+teamserver_password: password

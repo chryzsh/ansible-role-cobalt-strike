@@ -1,0 +1,35 @@
+
+---
+# Configure CS installation as Operator
+- name: Create kit directory in CS directory
+  file:
+    path: "{{ ansible_env.HOME }}/cobaltstrike/kits"
+    state: directory
+
+- name: Get download token for scripts from Cobalt Strike website
+  shell: |
+    curl -s https://www.cobaltstrike.com/scripts -d "dlkey={{ license_key }}" | grep 'href="/downloads/' | cut -d '/' -f3 | head -1
+  register: script_download_token
+
+- name: Grep the kit URLs and save to dictionary
+  shell: |
+    curl -s https://www.cobaltstrike.com/scripts -d "dlkey={{ license_key }}" | grep 'href="/downloads/' | grep {{ item }} | awk -F'/|"' '{print $5}'
+  loop:
+    - artifact
+    - resource 
+  register: kit_urls
+
+- name: Download kits by looping over dictionary
+  get_url:
+    url: "https://www.cobaltstrike.com/downloads/{{ script_download_token.stdout }}/{{ item.stdout }}"
+    dest: "/tmp/"
+    mode: get
+  loop: "{{ kit_urls.results }}"
+
+- name: Extract the Cobalt Strike kits
+  unarchive:
+    src: /tmp/{{ item.stdout }}
+    dest: "{{ ansible_env.HOME }}/cobaltstrike/kits"
+    remote_src: yes
+  loop: "{{ kit_urls.results }}"
+
