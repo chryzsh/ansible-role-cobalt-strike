@@ -16,11 +16,11 @@
   tags: update
 
 - name: Set default Java version
-  shell: update-java-alternatives -s java-1.11.0-openjdk-amd64
+  command: update-java-alternatives -s java-1.11.0-openjdk-amd64
   become: yes
 
 - name: Get download token from Cobalt Strike website
-  shell: |
+  command: |
     curl -s https://www.cobaltstrike.com/download -d "dlkey={{ license_key }}" | grep 'href="/downloads/' | cut -d '/' -f3
   register: download_token
 
@@ -37,7 +37,7 @@
     remote_src: yes
 
 - name: Update Cobalt Strike from the CS directory
-  shell: ./update
+  command: ./update
   args:
     chdir: "{{ ansible_env.HOME }}/cobaltstrike"
   tags: update_cs
