@@ -1,6 +1,7 @@
 ---
 # meta file for Cobalt Strike role
 galaxy_info:
+  role_name: cobalt_strike
   author: "@crusher"
   description: Install Cobalt Strike and optionally configure as Teamserver.
   company: "@crusher"
