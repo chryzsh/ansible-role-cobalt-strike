@@ -1,2 +1,12 @@
 ---
-# meta file for role_template
+# meta file for Cobalt Strike role
+galaxy_info:
+  author: "@crusher"
+  description: Install Cobalt Strike and optionally configure as Teamserver.
+  company: "@crusher"
+  license: MIT / BSD
+  min_ansible_version: 2.0
+  galaxy_tags:
+    - cobaltstrike, redteam, cobalt_strike, cobalt-strike
+
+dependencies: []
