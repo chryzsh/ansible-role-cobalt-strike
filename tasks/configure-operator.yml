@@ -6,12 +6,12 @@
     state: directory
 
 - name: Get download token for scripts from Cobalt Strike website
-  command: |
+  shell: |
     curl -s https://www.cobaltstrike.com/scripts -d "dlkey={{ license_key }}" | grep 'href="/downloads/' | cut -d '/' -f3 | head -1
   register: script_download_token
 
 - name: Grep the kit URLs and save to dictionary
-  command: |
+  shell: |
     curl -s https://www.cobaltstrike.com/scripts -d "dlkey={{ license_key }}" | grep 'href="/downloads/' | grep {{ item }} | awk -F'/|"' '{print $5}'
   loop:
     - artifact
