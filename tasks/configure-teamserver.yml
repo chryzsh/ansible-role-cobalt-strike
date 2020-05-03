@@ -14,7 +14,9 @@
 - name: Start Teamserver inside tmux session
   shell: |
     tmux has-session -t teamserver_session 2>/dev/null;
-    if [$? !=0]; then tmux new-session -d -s teamserver_session 'cd {{ ansible_env.HOME }}/cobaltstrike && sudo ./teamserver {{ ansible_default_ipv4.address }} {{ teamserver_password }} {{ ansible_env.HOME }}/cobaltstrike/profiles/{{ c2_profile_url | basename }}'
+    if [ $? -ne 0 ]; then tmux new-session -d -s teamserver_session 'cd {{ ansible_env.HOME }}/cobaltstrike && sudo ./teamserver {{ ansible_default_ipv4.address }} {{ teamserver_password }} {{ ansible_env.HOME }}/cobaltstrike/profiles/{{ c2_profile_url | basename }}'
     fi
   args:
     chdir: "{{ ansible_env.HOME }}/cobaltstrike"
+  tags:
+  - tmux

@@ -6,10 +6,11 @@
   when: ansible_os_family == "Windows"
   
 - name: Include Cobalt Strike role specific variables
-  include_vars: "{{ cobalt_strike_role }}.yml"
+  include_vars: "main.yml"
 
 - name: Include tasks for Cobalt Strike role Teamserver or Operator
   include_tasks: "configure-{{ cobalt_strike_role }}.yml"
+  tags: always
 
 # Cleanup
 - name: Delete Cobalt Strike tarballs
