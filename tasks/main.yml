@@ -6,7 +6,7 @@
   when: ansible_os_family == "Windows"
   
 - name: Include tasks to install Cobalt Strike
-  include_tasks: "setup-cobalstrike.yml"
+  include_tasks: "setup-cobaltstrike.yml"
   tags: always
 
 - name: Include tasks for Cobalt Strike role Teamserver or Operator
