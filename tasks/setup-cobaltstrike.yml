@@ -36,6 +36,7 @@
     src: /tmp/cobaltstrike-dist.tgz
     dest: "{{ ansible_env.HOME }}"
     remote_src: yes
+  become: no
 
 - name: Update Cobalt Strike from the CS directory
   shell: ./update
