@@ -38,7 +38,7 @@
     remote_src: yes
 
 - name: Update Cobalt Strike from the CS directory
-  command: ./update
+  shell: ./update
   args:
     chdir: "{{ ansible_env.HOME }}/cobaltstrike"
   tags: update_cs
