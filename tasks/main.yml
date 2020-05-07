@@ -5,8 +5,9 @@
 - include_tasks: "windows-setup-cobaltstrike.yml"
   when: ansible_os_family == "Windows"
   
-- name: Include Cobalt Strike role specific variables
-  include_vars: "main.yml"
+- name: Include tasks to install Cobalt Strike
+  include_tasks: "setup-cobalstrike.yml"
+  tags: always
 
 - name: Include tasks for Cobalt Strike role Teamserver or Operator
   include_tasks: "configure-{{ cobalt_strike_role }}.yml"
