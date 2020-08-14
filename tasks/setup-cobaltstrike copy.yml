@@ -1,4 +1,3 @@
----
 # General installation
 - name: Write license key to file
   copy:
@@ -17,7 +16,7 @@
   tags: update
 
 - name: Set default Java version
-  command: update-java-alternatives -s java-1.11.0-openjdk-amd64
+  shell: update-java-alternatives -s java-1.11.0-openjdk-amd64
   become: yes
 
 - name: Get download token from Cobalt Strike website
@@ -36,7 +35,6 @@
     src: /tmp/cobaltstrike-dist.tgz
     dest: "{{ ansible_env.HOME }}"
     remote_src: yes
-  become: no
 
 - name: Update Cobalt Strike from the CS directory
   shell: ./update
@@ -44,4 +42,3 @@
     chdir: "{{ ansible_env.HOME }}/cobaltstrike"
   tags: update_cs
   # tag to update
-  become: no
