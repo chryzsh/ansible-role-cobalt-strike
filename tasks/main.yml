@@ -7,11 +7,15 @@
   
 - name: Include tasks to install Cobalt Strike
   include_tasks: "setup-cobaltstrike.yml"
-  tags: always
+  #tags: always
+
+# - name: Include tasks for Cobalt Strike role Teamserver or Operator
+#   include_tasks: "configure-{{ cobalt_strike_role }}.yml"
+#   #tags: always
 
 - name: Include tasks for Cobalt Strike role Teamserver or Operator
-  include_tasks: "configure-{{ cobalt_strike_role }}.yml"
-  tags: always
+  include_tasks: "configure-teamserver.yml"
+  when: cobalt_strike_role == "teamserver"
 
 # Cleanup
 - name: Delete Cobalt Strike tarballs

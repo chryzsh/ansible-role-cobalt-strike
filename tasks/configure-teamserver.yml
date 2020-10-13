@@ -5,18 +5,64 @@
     path: "{{ ansible_env.HOME }}/cobaltstrike/profiles"
     state: directory
 
-- name: Download specified C2 profile
-  get_url:
-    url: "{{ c2_profile_url }}"
-    dest: "{{ ansible_env.HOME }}/cobaltstrike/profiles"
-    mode: get
+# - name: Download specified C2 profile
+#   get_url:
+#     url: "{{ c2_profile_url }}"
+#     dest: "{{ ansible_env.HOME }}/cobaltstrike/profiles"
+#     mode: get
 
-- name: Start Teamserver inside tmux session
+- name: Download C2Concealer
+  git:
+    repo: https://github.com/FortyNorthSecurity/C2concealer
+    clone: yes
+    dest: "{{ ansible_env.HOME }}/C2Concealer"
+
+
+- name: Install C2Concealer
+  shell: |
+    ./install.sh
+  args:
+    chdir: "{{ ansible_env.HOME }}/C2Concealer"
+  become: yes
+
+- name: Download expect file for C2Concealer
+  get_url:
+    url: https://gist.github.com/chryzsh/3ed4351d068fcb7b75928e2897fdabf8/raw/7a3b389923d3441d35811aecd0693055ad6008ec/gistfile1.txt
+    dest: "{{ ansible_env.HOME }}/cobaltstrike/profiles/c2concealer_answer"
+
+### dont start doing this before we are sure its working
+# - name: Find any old c2concealer c2 profile files (ends with .profile)
+#   find:
+#     paths: ["{{ ansible_env.HOME }}/cobaltstrike/profiles"]
+#     patterns: "*.profile"
+#   register: old_profiles
+
+# - name: Delete any old profile files
+#   file:
+#     path: "{{ item.path }}"
+#     state: absent
+#   with_items: "{{ old_profiles.files }}"
+
+- name: Run C2Concealer
+  shell: |
+    expect c2concealer_answer {{ cdn_endpoint }} {{ variants }} {{ c2concealer_option }} {{ c2_hostname }} {{ keystore_password }} > output.txt
+  args:
+    chdir: "{{ ansible_env.HOME }}/cobaltstrike/profiles"
+    
+- name: Find c2concealer c2 profile files (ends with .profile)
+  find:
+    paths: ["{{ ansible_env.HOME }}/cobaltstrike/profiles"]
+    patterns: "*.profile"
+  register: c2_profile_filename
+
+- name:
+  debug:
+    var: c2_profile_filename
+
+- name: Start Teamserver inside tmux session with specified profile
   shell: |
     tmux has-session -t teamserver_session 2>/dev/null;
-    if [ $? -ne 0 ]; then tmux new-session -d -s teamserver_session 'cd {{ ansible_env.HOME }}/cobaltstrike && sudo ./teamserver {{ ansible_default_ipv4.address }} {{ teamserver_password }} {{ ansible_env.HOME }}/cobaltstrike/profiles/{{ c2_profile_url | basename }}'
+    if [ $? -ne 0 ]; then tmux new-session -d -s teamserver_session 'cd {{ ansible_env.HOME }}/cobaltstrike && sudo ./teamserver {{ ansible_default_ipv4.address }} {{ teamserver_password }} {{ c2_profile_filename.files[0].path }}'
     fi
   args:
     chdir: "{{ ansible_env.HOME }}/cobaltstrike"
-  tags:
-  - tmux

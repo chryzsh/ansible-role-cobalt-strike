@@ -14,7 +14,6 @@
     update_cache: yes
     state: latest
   become: yes
-  tags: update
 
 - name: Set default Java version
   command: update-java-alternatives -s java-1.11.0-openjdk-amd64
@@ -42,6 +41,4 @@
   shell: ./update
   args:
     chdir: "{{ ansible_env.HOME }}/cobaltstrike"
-  tags: update_cs
-  # tag to update
   become: no

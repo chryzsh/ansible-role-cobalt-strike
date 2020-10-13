@@ -1,0 +1,38 @@
+#!/usr/bin/expect -f
+
+# About
+# This expect script answers the prompts for C2concealer to set up a valid TLS certificate for a C2 profile in Cobalt Strike. It allows it to be used in automation tools such as Ansible. 
+
+# hostname for the CDN endpoint, will be set in the host header in the c2 profile 
+set domainfront_hostname [lindex $argv 0]
+
+# the number of cs c2 profile variants to create
+set variants [lindex $argv 1]
+
+# which choice. only supports choice 2 atm, lets encrypt
+set choice [lindex $argv 2]
+
+# the real c2 domain (not the domain front or CDN endpoint)
+set domain [lindex $argv 3]
+
+# password for the keystore file
+set keystore_password [lindex $argv 4]
+
+set timeout -1
+
+spawn sudo C2concealer --hostname $domainfront_hostname --variants $variants
+
+expect "Option"
+#expect "Option [1/2/3/4]:"
+
+send "$choice\r"
+
+expect "What is the domain? (ex: google.com)"
+
+send -- "$domain\r"
+
+expect "Enter a password for securing the keystore?"
+
+send -- "$keystore_password\r"
+
+expect eof

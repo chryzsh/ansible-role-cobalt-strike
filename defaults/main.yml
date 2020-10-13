@@ -3,5 +3,16 @@
 
 cobalt_strike_role: operator
 license_key: aaaa-bbbb-cccc-dddd
-c2_profile_url: https://github.com/xx0hcd/Malleable-C2-Profiles/raw/master/template.profile
 teamserver_password: password
+
+# deprecated
+#c2_profile_url: https://github.com/xx0hcd/Malleable-C2-Profiles/raw/master/template.profile
+
+# c2concealer variables
+cdn_endpoint: example.com
+variants: 1
+c2concealer_option: 2
+c2_hostname: example.com
+keystore_password: Welcome1
+
+c2_profile_filename: template.profile
