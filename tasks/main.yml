@@ -20,5 +20,5 @@
 # Cleanup
 - name: Delete Cobalt Strike tarballs
   file:
-    path: "/tmp/*.tgz"
+    path: "{{ ansible_env.HOME }}/*.tgz"
     state: absent

@@ -48,12 +48,19 @@
     expect c2concealer_answer {{ cdn_endpoint }} {{ variants }} {{ c2concealer_option }} {{ c2_hostname }} {{ keystore_password }} > output.txt
   args:
     chdir: "{{ ansible_env.HOME }}/cobaltstrike/profiles"
+  become: yes
     
 - name: Find c2concealer c2 profile files (ends with .profile)
   find:
     paths: ["{{ ansible_env.HOME }}/cobaltstrike/profiles"]
     patterns: "*.profile"
   register: c2_profile_filename
+
+- name: Stop service apache2 (started by C2Concealer), if started
+  service:
+    name: apache2
+    state: stopped
+  become: yes
 
 - name:
   debug:
@@ -66,3 +73,4 @@
     fi
   args:
     chdir: "{{ ansible_env.HOME }}/cobaltstrike"
+  become: yes
