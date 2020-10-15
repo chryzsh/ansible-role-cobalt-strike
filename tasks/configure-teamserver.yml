@@ -55,10 +55,6 @@
     patterns: "*.profile"
   register: c2_profile_filename
 
-- name:
-  debug:
-    var: c2_profile_filename
-
 - name: Start Teamserver inside tmux session with specified profile
   shell: |
     tmux has-session -t teamserver_session 2>/dev/null;
