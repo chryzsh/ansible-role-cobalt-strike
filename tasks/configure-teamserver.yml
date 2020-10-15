@@ -56,8 +56,6 @@
     patterns: "*.profile"
   register: c2_profile_filename
 
-<<<<<<< HEAD
-=======
 - name: Stop service apache2 (started by C2Concealer), if started
   service:
     name: apache2
@@ -68,7 +66,6 @@
   debug:
     var: c2_profile_filename
 
->>>>>>> 29c20567bdcc40c533a79515b0684aedf0e459ce
 - name: Start Teamserver inside tmux session with specified profile
   shell: |
     tmux has-session -t teamserver_session 2>/dev/null;
