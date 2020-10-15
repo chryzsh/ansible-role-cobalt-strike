@@ -1,0 +1,7 @@
+---
+- hosts: all  
+  tasks:
+  - name: include cobalt_strike role
+    import_role:
+      name: cobalt_strike
+      tasks_from: setup-cobaltstrike

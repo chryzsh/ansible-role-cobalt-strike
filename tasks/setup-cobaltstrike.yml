@@ -27,18 +27,16 @@
 - name: Download Cobalt Strike tarball
   get_url:
     url: "https://www.cobaltstrike.com/downloads/{{ download_token.stdout }}/cobaltstrike-dist.tgz"
-    dest: "/tmp/"
+    dest: "{{ ansible_env.HOME }}"
     mode: get
 
 - name: Extract the Cobalt Strike tarball
   unarchive:
-    src: /tmp/cobaltstrike-dist.tgz
+    src: "{{ ansible_env.HOME }}/cobaltstrike-dist.tgz"
     dest: "{{ ansible_env.HOME }}"
     remote_src: yes
-  become: no
 
 - name: Update Cobalt Strike from the CS directory
   shell: ./update
   args:
     chdir: "{{ ansible_env.HOME }}/cobaltstrike"
-  become: no

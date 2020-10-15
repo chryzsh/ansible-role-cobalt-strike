@@ -48,6 +48,7 @@
     expect c2concealer_answer {{ cdn_endpoint }} {{ variants }} {{ c2concealer_option }} {{ c2_hostname }} {{ keystore_password }} > output.txt
   args:
     chdir: "{{ ansible_env.HOME }}/cobaltstrike/profiles"
+  become: yes
     
 - name: Find c2concealer c2 profile files (ends with .profile)
   find:
@@ -55,6 +56,19 @@
     patterns: "*.profile"
   register: c2_profile_filename
 
+<<<<<<< HEAD
+=======
+- name: Stop service apache2 (started by C2Concealer), if started
+  service:
+    name: apache2
+    state: stopped
+  become: yes
+
+- name:
+  debug:
+    var: c2_profile_filename
+
+>>>>>>> 29c20567bdcc40c533a79515b0684aedf0e459ce
 - name: Start Teamserver inside tmux session with specified profile
   shell: |
     tmux has-session -t teamserver_session 2>/dev/null;
@@ -62,3 +76,4 @@
     fi
   args:
     chdir: "{{ ansible_env.HOME }}/cobaltstrike"
+  become: yes
