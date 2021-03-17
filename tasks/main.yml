@@ -1,7 +1,7 @@
 ---
 # tasks file for cobalt_strike role
 
-# Setup/install task
+# Setup/install task / not currently in use 
 - include_tasks: "windows-setup-cobaltstrike.yml"
   when: ansible_os_family == "Windows"
   
@@ -16,6 +16,8 @@
 - name: Include tasks for Cobalt Strike role Teamserver or Operator
   include_tasks: "configure-teamserver.yml"
   when: cobalt_strike_role == "teamserver"
+  tags:
+    - configure_teamserver
 
 # Cleanup
 - name: Delete Cobalt Strike tarballs

@@ -13,9 +13,10 @@
 
 - name: Download C2Concealer
   git:
-    repo: https://github.com/FortyNorthSecurity/C2concealer
+    repo: https://github.com/chryzsh/C2concealer
     clone: yes
     dest: "{{ ansible_env.HOME }}/C2Concealer"
+    force: yes
 
 
 - name: Install C2Concealer
@@ -30,6 +31,30 @@
     url: https://gist.github.com/chryzsh/3ed4351d068fcb7b75928e2897fdabf8/raw/7a3b389923d3441d35811aecd0693055ad6008ec/gistfile1.txt
     dest: "{{ ansible_env.HOME }}/cobaltstrike/profiles/c2concealer_answer"
 
+- name: clear out existing cert file in cs directory
+  file:
+    path: "{{ ansible_env.HOME }}/cobaltstrike/profiles/{{ c2_hostname }}.store"
+    state: absent
+
+- name: clear out existing cert folder in lets encrypt directory
+  file:
+    path: "/etc/letsencrypt/live/{{ c2_hostname }}"
+    state: absent
+  become: yes
+
+- name: remove apache files
+  file:
+    path: "/etc/apache2/sites-available/000-default-le-ssl.conf"
+    state: absent
+  become: yes
+
+- name: remove apache files
+  file:
+    path: "/etc/apache2/sites-enabled/000-default-le-ssl.conf"
+    state: absent
+  become: yes
+
+
 ### dont start doing this before we are sure its working
 # - name: Find any old c2concealer c2 profile files (ends with .profile)
 #   find:
@@ -43,6 +68,8 @@
 #     state: absent
 #   with_items: "{{ old_profiles.files }}"
 
+
+# example: expect c2concealer_answer appsdxweukircdnept-akstd.azureedge.net 1 2 mnemonic-test.xyz 
 - name: Run C2Concealer
   shell: |
     expect c2concealer_answer {{ cdn_endpoint }} {{ variants }} {{ c2concealer_option }} {{ c2_hostname }} {{ keystore_password }} > output.txt
